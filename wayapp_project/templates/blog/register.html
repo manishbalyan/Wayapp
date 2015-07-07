@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap_tags %}
+	<h2> Register for Wayapp</h2>
+	<form id="user_form" method="post" action="/blog/register/" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{form | as_bootstrap }}
+		<input type="submit" name="submit" value="Register" class="btn btn-primary">	
+	</form>
+	<br>
+{% endblock %}

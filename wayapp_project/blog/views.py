@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import Context, loader, RequestContext
 from blog.models import Post
 from django.shortcuts import get_object_or_404, render_to_response, redirect
-from blog.forms import PostForm
+from blog.forms import PostForm, UserForm, LoginForm
 
 
 # helper function
@@ -41,4 +41,31 @@ def add_post(request):
 			print form.errors  # no, display error to end user
 	else:
 		form = PostForm()
-	return render_to_response('blog/add_post.html', {'form': form}, context)			
+	return render_to_response('blog/add_post.html', {'form': form}, context)	
+
+def register(request):
+	context = RequestContext(request)
+	if request.method == 'POST':
+		form = UserForm(request.POST, request.FILES)
+		if form.is_valid(): # is the form valid
+			form.save(commit=True) # yes and save to db
+			return redirect(index)
+		else:
+			print form.errors  # no, display error to end user
+	else:
+		form = UserForm()
+	return render_to_response('blog/register.html', {'form': form}, context)
+
+def login(request):
+	context = RequestContext(request)
+	if request.method == 'POST':
+		form = LoginForm(request.POST, request.FILES)
+		if form.is_valid(): # is the form valid
+			form.save(commit=True) # yes and save to db
+			return redirect(index)
+		else:
+			print form.errors  # no, display error to end user
+	else:
+		form = LoginForm()
+	return render_to_response('blog/login.html', {'form': form}, context)
+		
